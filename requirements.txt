@@ -1,0 +1,8 @@
+blinker
+click
+Flask
+google-cloud-logging
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug

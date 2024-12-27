@@ -2,7 +2,7 @@ from flask import Flask, request, render_template_string, Response
 
 app = Flask(__name__)
 
-# HTML template with Element Plus time picker, Vue.js, and your provided HTML wrapper
+# HTML template 
 html_template = """
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,6 @@ html_template = """
     <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
     <link rel="icon" href="/static/tch.ico" type="image/x-icon">
     <style>
-        /* Your existing styles */
         :root {
             /* Light mode */
             --background-color: #ffffff;
@@ -59,8 +58,8 @@ html_template = """
         }
 
         #themeToggle {
-            font-size: 12px; /* Smaller text size */
-            padding: 5px 10px; /* Smaller button size */
+            font-size: 12px; 
+            padding: 5px 10px; 
         }
 
         .timecard-container {

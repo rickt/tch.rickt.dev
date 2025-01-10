@@ -8,7 +8,7 @@ html_template = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>t c h</title>
+    <title>Time Card Helper</title>
     <!-- Meta viewport for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
@@ -88,7 +88,7 @@ html_template = """
             <p class="h3 fw-bold">t c h</p>
             <div>
                 <p><button id="themeToggle" class="btn btn-secondary">Toggle Dark Mode</button></p>
-                <p>time card helper -- calculate the earliest moment you can clock out</p>
+                <p>Time Card Helper -- Calculate the earliest moment you can clock out</p>
             </div>
         </div>
         <div class="text-center my-3">

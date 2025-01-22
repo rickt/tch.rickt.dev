@@ -1,0 +1,68 @@
+name: Deploy tch.rickt.dev to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - timecard.py
+      - Dockerfile
+      - static/*
+      - templates/*
+      - .env
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Load environment variables
+      - name: Load env file
+        id: load_env
+        working-directory: .
+        run: |
+          cat .env >> $GITHUB_ENV
+
+      # Step 3: Authenticate with GCP
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      # Step 4: Authenticate Docker with GCP
+      - name: Authenticate Docker
+        run: |
+          gcloud auth configure-docker gcr.io --quiet
+
+      # Step 5: Build Docker image
+      - name: Build Docker image
+        working-directory: .
+        run: |
+          docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.ENDPOINT }} .
+
+      # Step 6: Docker push
+      - name: Push Docker image
+        working-directory: .
+        run: |
+          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.ENDPOINT }}
+
+      # Step 8: Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud beta run deploy ${{ env.ENDPOINT }} \
+            --region ${{ env.GCP_REGION }} \
+            --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.ENDPOINT }} \
+            --port ${{ env.PORT }} \
+            --cpu ${{ env.CLOUDRUN_CPU }} \
+            --memory ${{ env.CLOUDRUN_MEMORY }}Gi \
+            --max-instances ${{ env.CLOUDRUN_MAXINSTANCES }} \
+            --concurrency ${{ env.CLOUDRUN_CONCURRENCY }} \
+            --service-account ${{ env.GCP_SERVICE_ACCOUNT }} \
+            --platform managed \
+            --allow-unauthenticated
+
+# EOF
